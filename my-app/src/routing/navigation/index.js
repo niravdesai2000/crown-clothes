@@ -1,1 +1,1 @@
-export {default} from './navigation.component.jsx';
+export {default} from './navigation.component';

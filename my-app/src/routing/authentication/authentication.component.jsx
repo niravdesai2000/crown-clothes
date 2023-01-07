@@ -1,7 +1,7 @@
 import React from "react";
-import SignInForm from "../../components/sign-in-form/sign-in-form.component";
-import SignUpForm from "../../components/sign-up-form/sign-up-form.component";
 import './authentication.styles.scss';
+import SignInForm from "../../components/sign-in-form";
+import SignUpForm from "../../components/sign-up-form";
 
 const Authentication = () => {
     // eslint-disable-next-line no-lone-blocks
@@ -20,11 +20,10 @@ const Authentication = () => {
 
     return (
         <div className='authentication-container'>
-            {/*Google Sign In With Popup Redirect
-          <button onClick={googleRedirectSignInWithPopup}>
-            Sign In With Redirect
-          </button> 
-      */}
+            {/*Google Sign In With Popup Redirect*/}
+            {/*<button onClick={googleRedirectSignInWithPopup}>
+                Sign In With Redirect
+            </button>*/}
             <SignInForm/>
             <SignUpForm/>
         </div>

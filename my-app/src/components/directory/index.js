@@ -1,1 +1,1 @@
-export {default} from './directory.component.jsx';
+export {default} from './directory.component';

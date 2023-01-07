@@ -1,12 +1,14 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {
     createUserDocumentFromAuth,
     googleSignInWithPopup,
     signAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
-import Button from "../button/button.components";
-import FormInput from "../form-input/form-input.component";
 import "./sign-in.styles.scss";
+import {UserContext} from "../../context/user.context";
+import {useNavigate} from "react-router-dom";
+import Button from "../button";
+import FormInput from "../form-input";
 
 const defaultFormFields = {
     email: "",
@@ -20,12 +22,16 @@ const defaultFormFields = {
 const SignInForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password} = formFields;
+    const {setUserState} = useContext(UserContext);
+    const navigate = useNavigate();
 
 // 4. function call and user data pass on createUserDocumentFromAuth function 
     const signWithGoogle = async (e) => {
         e.preventDefault();
         const {user} = await googleSignInWithPopup();
         await createUserDocumentFromAuth(user);
+        setUserState(user);
+        navigate('/');
     };
 
     const handleChange = (event) => {
@@ -57,8 +63,11 @@ const SignInForm = () => {
             return;
         }
         try {
-            const response = await signAuthUserWithEmailAndPassword(email, password);
+            const {user} = await signAuthUserWithEmailAndPassword(email, password);
             setFormFields(defaultFormFields);
+            setUserState(user);
+            navigate("/");
+
         } catch (error) {
             if (error.code === "auth/user-not-found") return alert("wrong email...");
             else if (error.code === "auth/wrong-password") return alert("wrong password...");

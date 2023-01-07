@@ -1,1 +1,1 @@
-export {default} from './category-item.component.jsx';
+export {default} from './category-item.component';
