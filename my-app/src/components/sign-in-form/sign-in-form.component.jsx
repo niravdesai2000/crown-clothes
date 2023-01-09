@@ -1,11 +1,6 @@
-import React, {useContext, useState} from "react";
-import {
-    createUserDocumentFromAuth,
-    googleSignInWithPopup,
-    signAuthUserWithEmailAndPassword,
-} from "../../utils/firebase/firebase.utils";
+import React, {useState} from "react";
+import {googleSignInWithPopup, signAuthUserWithEmailAndPassword,} from "../../utils/firebase/firebase.utils";
 import "./sign-in.styles.scss";
-import {UserContext} from "../../context/user.context";
 import {useNavigate} from "react-router-dom";
 import Button from "../button";
 import FormInput from "../form-input";
@@ -22,15 +17,12 @@ const defaultFormFields = {
 const SignInForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password} = formFields;
-    const {setUserState} = useContext(UserContext);
     const navigate = useNavigate();
 
 // 4. function call and user data pass on createUserDocumentFromAuth function 
     const signWithGoogle = async (e) => {
         e.preventDefault();
-        const {user} = await googleSignInWithPopup();
-        await createUserDocumentFromAuth(user);
-        setUserState(user);
+        await googleSignInWithPopup();
         navigate('/');
     };
 
@@ -63,9 +55,8 @@ const SignInForm = () => {
             return;
         }
         try {
-            const {user} = await signAuthUserWithEmailAndPassword(email, password);
+            await signAuthUserWithEmailAndPassword(email, password);
             setFormFields(defaultFormFields);
-            setUserState(user);
             navigate("/");
 
         } catch (error) {
