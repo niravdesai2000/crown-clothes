@@ -9,7 +9,7 @@ import {
     signInWithRedirect,
     signOut
 } from "firebase/auth";
-import {doc, getDoc, getFirestore, setDoc} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs, getFirestore, query, setDoc, writeBatch} from "firebase/firestore";
 
 // 1. Create firebase web-app
 const firebaseConfig = {
@@ -37,10 +37,10 @@ export const googleSignInWithPopup = () => signInWithPopup(auth, provider);
 export const googleRedirectSignInWithPopup = () =>
     signInWithRedirect(auth, provider);
 
-// 5. create db 
+// 5. create db
 export const db = getFirestore();
 
-// 6. as a receive userAuth argument and check userExists or not , create database on fireStore 
+// 6. as a receive userAuth argument and check userExists or not , create database on fireStore
 export const createUserDocumentFromAuth = async (
     userAuth,
     additionalInformation
@@ -83,4 +83,30 @@ export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangeListener = (callback) => {
     return onAuthStateChanged(auth, callback);
+}
+
+// convert json to firebase data base
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+    objectsToAdd.forEach(objects => {
+        const docRef = doc(collectionRef, objects.title.toLowerCase());
+        batch.set(docRef, objects);
+    })
+    await batch.commit();
+}
+
+// get categories from firebase data base
+export const getCategoriesAndDocuments = async () => {
+    const collectionRef = collection(db, 'categories');
+    const q = query(collectionRef);
+    const querySnapshot = await getDocs(q);
+
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapShot) => {
+        const {title, items} = docSnapShot.data();
+        acc[title.toLowerCase()] = items;
+        return acc;
+    }, {})
+
+    return categoryMap;
 }

@@ -1,0 +1,13 @@
+.categories-item-container {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  column-gap: 20px;
+  row-gap: 50px;
+}
+
+.categories-title {
+  font-size: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 600;
+}
