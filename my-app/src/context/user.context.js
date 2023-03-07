@@ -8,7 +8,7 @@ export const UserContext = createContext({
 export const userConstant = {
     USER_IS_LOGIN: 'USER_IS_LOGIN'
 }
-export const userReducer = (state, action) => {
+export const userReducer = (state=[], action) => {
     const {type, payload} = action;
     switch (type) {
         case userConstant.USER_IS_LOGIN:
@@ -17,11 +17,11 @@ export const userReducer = (state, action) => {
                 userState: payload
             }
         default:
-            throw new Error(`UserReducer:-${type} error`);
+            return state;
     }
 }
 
-export const Provider = ({children}) => {
+export const UserProvider = ({children}) => {
     const INITIAL_USER_STATE = {
         userState: null
     }

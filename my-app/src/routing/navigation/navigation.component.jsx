@@ -2,19 +2,20 @@ import React, {useContext} from "react";
 import {Link, Outlet, useNavigate} from "react-router-dom";
 import './navigation.styles.scss';
 import {ReactComponent as CrownLogo} from "../../assets/crown.svg";
-import {UserContext} from "../../context/user.context";
 import {signOutUser} from "../../utils/firebase/firebase.utils";
 import ShopIcon from "../../components/shop-icon";
 import CartDropdown from "../../components/cart-dropdown";
 import {CartContext} from "../../context/cart.context";
+import {useSelector} from "react-redux";
 
 const Navigation = () => {
-    const {userState, setUserState} = useContext(UserContext);
-    const {isOpen} = useContext(CartContext);
+    const currentUser = useSelector(state=> state.user.currentUser);
+    const isOpen = useSelector(item => item.cart.isOpen);
+    console.log(isOpen)
+    // const {isOpen} = useContext(CartContext);
     const navigate = useNavigate();
     const signOutHandler = async () => {
         await signOutUser();
-        setUserState(null);
         navigate("/auth");
     }
     return (
@@ -27,7 +28,7 @@ const Navigation = () => {
                     <Link className="nav-link" to="/shop">
                         Shop
                     </Link>
-                    {userState ?
+                    {currentUser ?
                         <span className="nav-link" onClick={signOutHandler}> Sign Out </span> :
                         <Link className="nav-link" to="/auth">
                             Sign In
@@ -35,7 +36,7 @@ const Navigation = () => {
                     }
                     <ShopIcon/>
                 </div>
-                {isOpen && <CartDropdown/>}
+                {isOpen ? <CartDropdown/> :<></>}
             </div>
             <Outlet/>
         </>

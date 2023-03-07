@@ -1,0 +1,6 @@
+export const cartConstant = {
+    SET_CART_ITEM: 'SET_CART_ITEM',
+    CART_TO_OPEN: 'CART_TO_OPEN',
+    SET_CART_COUNT: 'SET_CART_COUNT',
+    SET_CART_TOTAL: 'SET_CART_TOTAL'
+}

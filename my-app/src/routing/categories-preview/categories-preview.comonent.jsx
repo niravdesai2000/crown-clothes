@@ -1,15 +1,16 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import './categories-preview.styles.scss';
-import {ProductContext} from "../../context/product.context";
 import CategoryPreview from "../../components/category-priview";
+import {useSelector} from "react-redux";
 
 const CategoriesPreview = () => {
-    const {product} = useContext(ProductContext);
+    // const {product} = useContext(ProductContext);
+    const categoriesData = useSelector(data => data?.categories?.categories);
     return (
         <div className={"categories-container"}>
-            {Object.keys(product).map(title => {
-                const products = product[title];
-                return <CategoryPreview key={title} title={title} products={products}/>
+            {Object.keys(categoriesData).map(title => {
+                const categories = categoriesData[title];
+                return <CategoryPreview key={title} title={title} products={categories}/>
             })}
         </div>
     )
