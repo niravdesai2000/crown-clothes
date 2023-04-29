@@ -6,17 +6,13 @@ import Categories from "../../components/categories";
 import {addCollectionAndDocuments, getCategoriesAndDocuments} from "../../utils/firebase/firebase.utils";
 import {SHOP_DATA} from "../../components/shopData/shopData";
 import {useDispatch} from "react-redux";
-import {getCategoriesProduct} from "../../redux/action/categories/categories.action";
+import {fetchCategoriesStart, getCategoriesProduct} from "../../redux/action/categories/categories.action";
 
 const Shop = () => {
     const dispatch = useDispatch();
     useEffect(()=>{
         addCollectionAndDocuments('categories', SHOP_DATA);
-        const categoryMap = async () => {
-            const getCategories = await getCategoriesAndDocuments();
-            dispatch(getCategoriesProduct(getCategories));
-        };
-        categoryMap();
+        dispatch(fetchCategoriesStart());
     },[])
     return (
         <Routes>

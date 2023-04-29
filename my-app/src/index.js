@@ -8,21 +8,28 @@ import {UserProvider} from "./context/user.context";
 import {ProductProvider} from "./context/product.context";
 import {CartContextProvider} from "./context/cart.context";
 import {Provider} from "react-redux";
-import {store} from "./redux/store/store";
+import {persistor, store} from "./redux/store/store";
+import { PersistGate } from 'redux-persist/integration/react';
+import {Elements} from "@stripe/react-stripe-js";
+import {stripePromise} from "./utils/strip/strip.utils";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <BrowserRouter>
-                {/*<UserProvider>*/}
-                {/*    <ProductProvider>*/}
-                {/*        <CartContextProvider>*/}
-                            <App/>
-                        {/*</CartContextProvider>*/}
-                    {/*</ProductProvider>*/}
-                {/*</UserProvider>*/}
-            </BrowserRouter>
+            <PersistGate loading={null} persistor={persistor}>
+                <BrowserRouter>
+                    <Elements stripe={stripePromise}>
+                        <App/>
+                    </Elements>
+                    {/*<UserProvider>*/}
+                    {/*    <ProductProvider>*/}
+                    {/*        <CartContextProvider>*/}
+                            {/*</CartContextProvider>*/}
+                        {/*</ProductProvider>*/}
+                    {/*</UserProvider>*/}
+                </BrowserRouter>
+            </PersistGate>
         </Provider>
     </React.StrictMode>
 );

@@ -6,16 +6,18 @@ import {signOutUser} from "../../utils/firebase/firebase.utils";
 import ShopIcon from "../../components/shop-icon";
 import CartDropdown from "../../components/cart-dropdown";
 import {CartContext} from "../../context/cart.context";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {signOutStart} from "../../redux/action/user/user.action";
 
 const Navigation = () => {
+    const dispatch = useDispatch();
     const currentUser = useSelector(state=> state.user.currentUser);
     const isOpen = useSelector(item => item.cart.isOpen);
     console.log(isOpen)
     // const {isOpen} = useContext(CartContext);
     const navigate = useNavigate();
     const signOutHandler = async () => {
-        await signOutUser();
+        await dispatch(signOutStart());
         navigate("/auth");
     }
     return (

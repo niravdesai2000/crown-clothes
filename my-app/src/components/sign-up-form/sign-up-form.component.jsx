@@ -4,6 +4,8 @@ import "./sign-up.styles.scss";
 import {useNavigate} from "react-router-dom";
 import FormInput from "../form-input";
 import Button from "../button";
+import {useDispatch} from "react-redux";
+import {signUpStart} from "../../redux/action/user/user.action";
 
 const defaultFormFields = {
     displayName: "",
@@ -22,6 +24,7 @@ const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {displayName, email, password, confirmPassword} = formFields;
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleChange = (event) => {
         const {name, value} = event.target;
@@ -59,11 +62,7 @@ const SignUpForm = () => {
         }
 
         try {
-            const {user} = await createAuthUserWithEmailAndPassword(
-                email,
-                password
-            );
-            await createUserDocumentFromAuth(user, {displayName});
+            dispatch(signUpStart(email,password,displayName));
             setFormFields(defaultFormFields);
             navigate("/");
         } catch (error) {

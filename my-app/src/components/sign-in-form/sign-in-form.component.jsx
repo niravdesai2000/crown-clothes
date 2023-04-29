@@ -4,6 +4,8 @@ import "./sign-in.styles.scss";
 import {useNavigate} from "react-router-dom";
 import Button from "../button";
 import FormInput from "../form-input";
+import {useDispatch} from "react-redux";
+import {emailSignInStart, googleSignInStart} from "../../redux/action/user/user.action";
 
 const defaultFormFields = {
     email: "",
@@ -18,11 +20,12 @@ const SignInForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password} = formFields;
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
 // 4. function call and user data pass on createUserDocumentFromAuth function 
     const signWithGoogle = async (e) => {
         e.preventDefault();
-        await googleSignInWithPopup();
+        dispatch(googleSignInStart());
         navigate('/');
     };
 
@@ -55,7 +58,7 @@ const SignInForm = () => {
             return;
         }
         try {
-            await signAuthUserWithEmailAndPassword(email, password);
+            await dispatch(emailSignInStart(email,password));
             setFormFields(defaultFormFields);
             navigate("/");
 

@@ -3,6 +3,7 @@ import './checkout.styles.scss';
 import CheckoutItem from "../../components/checkout-item";
 import {useDispatch, useSelector} from "react-redux";
 import {cartCount, cartFinalTotal} from "../../redux/action/cart/cart.action";
+import StripForm from "../../components/payment-method";
 
 const Checkout = () => {
     const cartItems = useSelector(item => item.cart.cartItems);
@@ -37,6 +38,7 @@ const Checkout = () => {
             </div>
             {cartItems.map(cartItem => <CheckoutItem key={cartItem.id} cartItem={cartItem}/>)}
             <span className={"total"}>Total: {total}</span>
+            <StripForm/>
         </div>
     )
 }

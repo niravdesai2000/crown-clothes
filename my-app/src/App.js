@@ -5,20 +5,15 @@ import Navigation from "./routing/navigation";
 import Shop from "./routing/shop";
 import Checkout from "./routing/checkout";
 import {useEffect} from "react";
-import {createUserDocumentFromAuth, onAuthStateChangeListener} from "./utils/firebase/firebase.utils";
+import {createUserDocumentFromAuth, getCurrentUser, onAuthStateChangeListener} from "./utils/firebase/firebase.utils";
 import {useDispatch} from "react-redux";
-import {currentUser} from "./redux/action/user/user.action";
+import {checkUserSession, currentUser} from "./redux/action/user/user.action";
+import {onAuthStateChanged} from "firebase/auth";
 
 const App = () => {
     const dispatch = useDispatch();
     useEffect(() => {
-        const unsubscribe = onAuthStateChangeListener((user) => {
-            if (user) {
-                createUserDocumentFromAuth(user);
-            }
-            dispatch(currentUser(user));
-        })
-        return unsubscribe;
+        dispatch(checkUserSession());
     }, [])
     return (
         <Routes>
